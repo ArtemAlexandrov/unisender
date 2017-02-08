@@ -60,7 +60,7 @@ module UniSender
     end
 
     def default_request(action, params)
-      params = translate_params(params).delete_if { |_, v| v.empty? }
+      params = translate_params(params).delete_if { |_, v| !v.present? }
       params.merge!({ 'api_key' => api_key, 'format' => 'json' })
       response = Net::HTTP.post_form(URI("https://api.unisender.com/#{locale}/api/#{action}"), params)
       raise NoMethodError.new("Unknown API method #{action}") if response.code == '404'
